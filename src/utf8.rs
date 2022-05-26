@@ -57,4 +57,35 @@ pub mod char_decoder {
             String::from(format!("U+{:04X}", non_structural_bytes_as_decimal))
         }
     }
+
+
+    #[cfg(test)]
+    mod tests {
+        use super::*;
+
+        #[test]
+        fn test_utf8_bytes_to_unicode_code_point_works_with_single_byte_scalars() {
+            let string = utf8_bytes_to_unicode_code_point('h'.to_string().as_bytes());
+            assert_eq!("U+0068".to_string(), string);
+        }
+
+        #[test]
+        fn test_utf8_bytes_to_unicode_code_point_works_with_multibyte_scalars() {
+            let string = utf8_bytes_to_unicode_code_point('é'.to_string().as_bytes());
+            assert_eq!("U+00E9".to_string(), string);
+        }
+
+        #[test]
+        fn test_utf8_bytes_to_unicode_code_point_works_with_emoji() {
+            let string = utf8_bytes_to_unicode_code_point('😀'.to_string().as_bytes());
+            assert_eq!("U+1F600".to_string(), string);
+        }
+
+        #[test]
+        fn test_utf8_bytes_to_unicode_code_point_works_with_emoji_that_uses_continuation_sequences() {
+            let string = utf8_bytes_to_unicode_code_point("☺️".to_string().as_bytes());
+            assert_eq!("U+98EAFE0F".to_string(), string);
+        }
+    }
+
 }
