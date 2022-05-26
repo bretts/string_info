@@ -65,24 +65,28 @@ pub mod char_decoder {
 
         #[test]
         fn test_utf8_bytes_to_unicode_code_point_works_with_single_byte_scalars() {
+            // This is a single 7 bit byte
             let string = utf8_bytes_to_unicode_code_point('h'.to_string().as_bytes());
             assert_eq!("U+0068".to_string(), string);
         }
 
         #[test]
         fn test_utf8_bytes_to_unicode_code_point_works_with_multibyte_scalars() {
+            // This scalar is a 2 byte sequence
             let string = utf8_bytes_to_unicode_code_point('é'.to_string().as_bytes());
             assert_eq!("U+00E9".to_string(), string);
         }
 
         #[test]
         fn test_utf8_bytes_to_unicode_code_point_works_with_emoji() {
+            // This emoji is a 4 byte sequence
             let string = utf8_bytes_to_unicode_code_point('😀'.to_string().as_bytes());
             assert_eq!("U+1F600".to_string(), string);
         }
 
         #[test]
         fn test_utf8_bytes_to_unicode_code_point_works_with_emoji_that_uses_continuation_sequences() {
+            // This code point is composed of two code points. The first 3 byte sequence is the base glyph for “White Smiling Face” and the second 3 byte sequence is the variation sequence
             let string = utf8_bytes_to_unicode_code_point("☺️".to_string().as_bytes());
             assert_eq!("U+98EAFE0F".to_string(), string);
         }
