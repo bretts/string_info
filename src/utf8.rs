@@ -90,6 +90,30 @@ pub mod char_decoder {
             let string = utf8_bytes_to_unicode_code_point("☺️".to_string().as_bytes());
             assert_eq!("U+98EAFE0F".to_string(), string);
         }
+
+        #[test]
+        fn test_decode_result_has_scalar_value() {
+            let decoded_char = decode('h');
+            assert_eq!(decoded_char.scalar, 'h');
+        }
+
+        #[test]
+        fn test_decode_result_has_codepoint_value() {
+            let decoded_char = decode('h');
+            assert_eq!(decoded_char.codepoint, "U+0068");
+        }
+
+         #[test]
+        fn test_decode_result_has_binary_value() {
+            let decoded_char = decode('h');
+            assert_eq!(decoded_char.binary, vec!["1101000"]);
+        }
+
+        #[test]
+        fn test_decode_result_has_decimal_value() {
+            let decoded_char = decode('h');
+            assert_eq!(decoded_char.decimal, vec![104]);
+        }
     }
 
 }
